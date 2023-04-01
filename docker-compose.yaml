@@ -1,0 +1,13 @@
+version: '1'
+
+services:
+  myapp:
+    image: twitchannouncer
+    container_name: twitchannouncer
+    restart: always
+    environment:
+      - TWITCH_CLIENT_ID=
+      - TWITCH_SECRET=
+    volumes:
+      - ./data:/app/data
+
