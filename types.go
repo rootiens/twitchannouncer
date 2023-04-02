@@ -51,3 +51,14 @@ type StreamResponse struct {
 		Cursor string `json:"cursor"`
 	} `json:"pagination"`
 }
+
+type StreamerData struct {
+	TwitchName     string `json:"twitch_login"`
+	DiscordChannel int64  `json:"discord_channel"`
+	State          string `json:"state"`
+	OfflineAt      string `json:"offline_at"`
+}
+
+type Streamers struct {
+	Streamers []StreamerData `json:"streamers"`
+}

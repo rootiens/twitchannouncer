@@ -7,15 +7,17 @@ import (
 )
 
 func main() {
-
-	streamers := []string{"rootiens", "theprimeagen"}
+    streamers, err := GetStreamers()
+    if err != nil {
+        panic(err)
+    }
 
 	var wg sync.WaitGroup
 
 	for {
 		CheckToken()
 
-		for _, streamer := range streamers {
+		for _, streamer := range streamers.Streamers {
 			wg.Add(1)
 			go func(name string) {
 				defer wg.Done()
@@ -28,7 +30,7 @@ func main() {
 				} else {
 					fmt.Println(name, "is offline")
 				}
-			}(streamer)
+			}(streamer.TwitchName)
 		}
 		wg.Wait()
 		fmt.Println("=======================")

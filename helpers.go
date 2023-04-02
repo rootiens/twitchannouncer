@@ -145,3 +145,20 @@ func httpRequest(body interface{}, headers HttpReq) (*http.Response, error) {
 
 	return res, nil
 }
+
+func GetStreamers() (Streamers, error) {
+	file, err := os.ReadFile("data.json")
+	if err != nil {
+		return Streamers{}, err
+	}
+    
+    data, _ := io.ReadAll(bytes.NewBuffer(file))
+
+	var streamers Streamers
+    err = json.Unmarshal(data, &streamers)
+    if err != nil{
+        return Streamers{}, err
+    }
+
+	return streamers, nil
+}
