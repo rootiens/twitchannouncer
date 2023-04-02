@@ -1,17 +1,6 @@
-package main
+package twitch
 
 import "time"
-
-type HttpHeaders struct {
-	Key   string
-	Value string
-}
-
-type HttpReq struct {
-	Method  string
-	Headers []HttpHeaders
-	Url     string
-}
 
 type TokenRequest struct {
 	ClientId     string `json:"client_id"`

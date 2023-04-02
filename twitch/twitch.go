@@ -1,4 +1,4 @@
-package main
+package twitch
 
 import (
 	"bytes"
@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"time"
+    . "github.com/rootiens/twitchannouncer/helpers"
 )
 
 const (
@@ -49,7 +49,7 @@ func GetBearerToken() error {
 		},
 	}
 
-	resp, err := httpRequest(reqBody, headers)
+	resp, err := HttpRequest(reqBody, headers)
 
 	defer resp.Body.Close()
 
@@ -94,7 +94,7 @@ func IsStreamerOnline(streamer string) (bool, error) {
 		},
 	}
 
-	resp, err := httpRequest(reqBody, headers)
+	resp, err := HttpRequest(reqBody, headers)
 
 	defer resp.Body.Close()
 
@@ -124,41 +124,19 @@ func IsStreamerOnline(streamer string) (bool, error) {
 	return false, nil
 }
 
-func httpRequest(body interface{}, headers HttpReq) (*http.Response, error) {
-	parsedBody, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(headers.Method, headers.Url, bytes.NewBuffer(parsedBody))
-
-	for _, header := range headers.Headers {
-		req.Header.Add(header.Key, header.Value)
-	}
-
-	client := &http.Client{}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	return res, nil
-}
-
 func GetStreamers() (Streamers, error) {
 	file, err := os.ReadFile("data.json")
 	if err != nil {
 		return Streamers{}, err
 	}
-    
-    data, _ := io.ReadAll(bytes.NewBuffer(file))
+
+	data, _ := io.ReadAll(bytes.NewBuffer(file))
 
 	var streamers Streamers
-    err = json.Unmarshal(data, &streamers)
-    if err != nil{
-        return Streamers{}, err
-    }
+	err = json.Unmarshal(data, &streamers)
+	if err != nil {
+		return Streamers{}, err
+	}
 
 	return streamers, nil
 }
