@@ -6,8 +6,9 @@ services:
     container_name: twitchannouncer
     restart: always
     environment:
-      - TWITCH_CLIENT_ID=8rq2qemr6fy82lflcilg59jtrcd1dq
-      - TWITCH_SECRET=dq86cb4pp6uqu12zf4869l6mrobjss
+      - TWITCH_CLIENT_ID=
+      - TWITCH_SECRET=
+      - DISCORD_BOT_TOKEN=
     volumes:
       - ./data:/app/data
 

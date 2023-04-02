@@ -2,16 +2,19 @@ package main
 
 import (
 	"fmt"
+	"github.com/rootiens/twitchannouncer/discord"
+	"github.com/rootiens/twitchannouncer/twitch"
 	"sync"
 	"time"
-    "github.com/rootiens/twitchannouncer/twitch"
 )
 
 func main() {
-    streamers, err := twitch.GetStreamers()
-    if err != nil {
-        panic(err)
-    }
+	streamers, err := twitch.GetStreamers()
+	if err != nil {
+		panic(err)
+	}
+
+	discord.InitiateDiscord()
 
 	var wg sync.WaitGroup
 
@@ -20,18 +23,24 @@ func main() {
 
 		for _, streamer := range streamers.Streamers {
 			wg.Add(1)
-			go func(name string) {
+			go func(streamer twitch.StreamerData) {
 				defer wg.Done()
-				ok, err := twitch.IsStreamerOnline(name)
+				ok, err := twitch.IsStreamerOnline(streamer.TwitchName)
 				if err != nil {
 					fmt.Println(err)
 				}
 				if ok {
-					fmt.Println(name, "is live")
+					fmt.Println(streamer.TwitchName, "is live")
 				} else {
-					fmt.Println(name, "is offline")
+					message := discord.Message{
+						ChannelID: streamer.DiscordChannel,
+						Content:   streamer.TwitchName + "is offline",
+					}
+					discord.SendMessage(message)
+
+					fmt.Println(streamer.TwitchName, "is offline")
 				}
-			}(streamer.TwitchName)
+			}(streamer)
 		}
 		wg.Wait()
 		fmt.Println("=======================")

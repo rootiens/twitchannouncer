@@ -2,13 +2,13 @@
     "streamers": [
         {
             "twitch_login": "rootiens",
-            "discord_channel": 1015341540249452698,
+            "discord_channel": "1015341540249452698",
             "state": "offline",
             "offline_at": "2023-04-01 12:00:00"
         },
         {
             "twitch_login": "theprimeagen",
-            "discord_channel": 1015341540249452698,
+            "discord_channel": "1015341540249452698",
             "state": "offline",
             "offline_at": "2023-04-01 12:00:00"
         }
