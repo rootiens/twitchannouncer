@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"sync"
 	"time"
+    "github.com/rootiens/twitchannouncer/twitch"
 )
 
 func main() {
-    streamers, err := GetStreamers()
+    streamers, err := twitch.GetStreamers()
     if err != nil {
         panic(err)
     }
@@ -15,13 +16,13 @@ func main() {
 	var wg sync.WaitGroup
 
 	for {
-		CheckToken()
+		twitch.CheckToken()
 
 		for _, streamer := range streamers.Streamers {
 			wg.Add(1)
 			go func(name string) {
 				defer wg.Done()
-				ok, err := IsStreamerOnline(name)
+				ok, err := twitch.IsStreamerOnline(name)
 				if err != nil {
 					fmt.Println(err)
 				}
